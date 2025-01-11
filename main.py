@@ -6,11 +6,11 @@ from github import Github
 
 mlflow.autolog(disable=True)
 
-def main(access_token, mlflow_server_uri):
+def main(access_token, mlflow_server_uri, repository_name):
     print("[log] Starting the GitHub issue parser.")
 
     api = Github(access_token)
-    repo = api.get_repo("vuejs/core")
+    repo = api.get_repo(repository_name)
 
     all_labels = [label.name for label in repo.get_labels()]
     open_issues = repo.get_issues(state='open')
@@ -35,6 +35,7 @@ def main(access_token, mlflow_server_uri):
     result_file_path = "dataset.json"
     with open(result_file_path, "w", encoding="utf-8") as file:
         json.dump({
+            "repository": repository_name,
             "project_labels": all_labels,
             "issues": issues,
             "contributors": contributors,
@@ -50,6 +51,7 @@ def main(access_token, mlflow_server_uri):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="GitHub Issue Parser")
     parser.add_argument("--access-token", type=str, help="GitHub Access Token")
+    parser.add_argument("--repository", type=str, help="Path to GitHub project")
     parser.add_argument(
         "--mlflow-server",
         type=str,
@@ -58,4 +60,4 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()    
-    main(args.access_token, args.mlflow_server)
+    main(args.access_token, args.mlflow_server, args.repository)
