@@ -1,1 +1,4 @@
-python: "3.10.12"
+python: "3.10.0"
+dependencies:
+  - PyGithub==2.5.0
+  - mlflow-skinny==2.19.0
