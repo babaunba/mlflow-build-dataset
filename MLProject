@@ -1,0 +1,8 @@
+name: Tag suggestor model
+
+python_env: python_env.yaml
+entry_points:
+  main:
+    parameters:
+      access_token: string
+    command: "python main.py --access-token {access_token}"
